@@ -599,13 +599,13 @@ if (typeof window.BWA !== 'object') {
                     if (mutation.addedNodes.length) {
                         const addedLinks = mutation.addedNodes;
                         addedLinks.forEach(function(addedLink) {
-                            //addedLink = addedLink.tagName === 'A' ? addedLink : addedLink.querySelector('a');
-                            if (addedLink.tagName === 'a') {
-                                addedLink.addEventListener('click', function(e) {
-                                // 클릭 이벤트가 발생하면 해당 A 태그에 대한 데이터를 전송합니다.
-                                aTagClickEvent(addedLink);
+                            const anchorElements = addedLink.querySelectorAll('a');
+                            anchorElements.forEach(function(anchor) {
+                                anchor.addEventListener('click', function(e) {
+                                    // 클릭 이벤트가 발생하면 해당 A 태그에 대한 데이터를 전송합니다.
+                                    aTagClickEvent(anchor);
                                 });
-                            }
+                            });
                         });
                     }
                 });
@@ -656,7 +656,8 @@ if (typeof window.BWA !== 'object') {
                         linkTitle.match(configDownloadExtensions) || linkUrl.match(configDownloadExtensions) ||
                         linkText.match(configDownloadExtensions)) {
                         linkType = 'dl';
-                    } else if (linkUrl.match(/^https?:\/\//) && linkUrl.includes(location.hostname)) { 
+                    } else if (linkUrl.match(/^https?:\/\//) &&
+                        linkUrl.includes(location.hostname)) {
                         linkType = 'in';
                     } else {
                         linkType = 'un';
